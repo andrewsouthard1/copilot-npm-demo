@@ -1,0 +1,613 @@
+Invariant MCP-scan v0.3.4
+
+[09:21:31] DEBUG    Verbose mode enabled, logging initialized                                                                                           cli.py:45
+           DEBUG    Using selector: KqueueSelector                                                                                          selector_events.py:64
+           INFO     Initializing MCPScanner                                                                                                      MCPScanner.py:64
+           DEBUG    Paths to scan: ['~/.codeium/windsurf/mcp_config.json', '~/.cursor/mcp.json', '~/Library/Application                          MCPScanner.py:66
+                    Support/Claude/claude_desktop_config.json', '~/.vscode/mcp.json', '~/Library/Application Support/Code/User/settings.json']                   
+           DEBUG    Storage file path: /Users/andrewsouthard/.mcp-scan                                                                           MCPScanner.py:70
+           DEBUG    Initializing StorageFile with path: /Users/andrewsouthard/.mcp-scan                                                         StorageFile.py:23
+           DEBUG    Expanded path: /Users/andrewsouthard/.mcp-scan                                                                              StorageFile.py:26
+           DEBUG    Path exists and is a directory: /Users/andrewsouthard/.mcp-scan                                                             StorageFile.py:62
+           DEBUG    MCPScanner initialized with timeout: 10, checks_per_server: 1                                                                MCPScanner.py:77
+           DEBUG    Entering MCPScanner async context                                                                                            MCPScanner.py:88
+           DEBUG    Entering MCPScanner context                                                                                                  MCPScanner.py:82
+           DEBUG    Initializing ContextManager                                                                                                  MCPScanner.py:23
+           INFO     Starting scan of 5 paths                                                                                                    MCPScanner.py:222
+           DEBUG    Disabling ContextManager                                                                                                     MCPScanner.py:33
+           DEBUG    Scan iteration 1/1                                                                                                          MCPScanner.py:228
+           DEBUG    Enabling context manager for final iteration                                                                                MCPScanner.py:231
+           DEBUG    Enabling ContextManager                                                                                                      MCPScanner.py:29
+           INFO     Scanning path: ~/.codeium/windsurf/mcp_config.json, inspect_only: False                                                     MCPScanner.py:194
+           INFO     Getting servers from path: ~/.codeium/windsurf/mcp_config.json                                                              MCPScanner.py:113
+           INFO     Scanning MCP config file: ~/.codeium/windsurf/mcp_config.json                                                               mcp_client.py:147
+           DEBUG    Expanded path: /Users/andrewsouthard/.codeium/windsurf/mcp_config.json                                                      mcp_client.py:149
+           DEBUG    Opening config file                                                                                                         mcp_client.py:168
+           ERROR    Error processing config file                                                                                                mcp_client.py:180
+                    ╭─────────────────────────────────────────── Traceback (most recent call last) ───────────────────────────────────────────╮                  
+                    │ /Users/andrewsouthard/.cache/uv/archive-v0/P7aXbOUawBMn7IeKtJ9g1/lib/python3.13/site-packages/mcp_scan/mcp_client.py:16 │                  
+                    │ 9 in scan_mcp_config_file                                                                                               │                  
+                    │                                                                                                                         │                  
+                    │   166 │                                                                                                                 │                  
+                    │   167 │   try:                                                                                                          │                  
+                    │   168 │   │   logger.debug("Opening config file")                                                                       │                  
+                    │ ❱ 169 │   │   with open(path) as f:                                                                                     │                  
+                    │   170 │   │   │   content = f.read()                                                                                    │                  
+                    │   171 │   │   logger.debug("Config file read successfully")                                                             │                  
+                    │   172 │   │   # use json5 to support comments as in vscode                                                              │                  
+                    ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                  
+                    FileNotFoundError: [Errno 2] No such file or directory: '/Users/andrewsouthard/.codeium/windsurf/mcp_config.json'                            
+           ERROR    file does not exist: ~/.codeium/windsurf/mcp_config.json                                                                    MCPScanner.py:123
+                    ╭─────────────────────────────────────────── Traceback (most recent call last) ───────────────────────────────────────────╮                  
+                    │ /Users/andrewsouthard/.cache/uv/archive-v0/P7aXbOUawBMn7IeKtJ9g1/lib/python3.13/site-packages/mcp_scan/MCPScanner.py:11 │                  
+                    │ 6 in get_servers_from_path                                                                                              │                  
+                    │                                                                                                                         │                  
+                    │   113 │   │   logger.info("Getting servers from path: %s", path)                                                        │                  
+                    │   114 │   │   result = ScanPathResult(path=path)                                                                        │                  
+                    │   115 │   │   try:                                                                                                      │                  
+                    │ ❱ 116 │   │   │   servers = (await scan_mcp_config_file(path)).get_servers()                                            │                  
+                    │   117 │   │   │   logger.debug("Found %d servers in path: %s", len(servers), path)                                      │                  
+                    │   118 │   │   │   result.servers = [                                                                                    │                  
+                    │   119 │   │   │   │   ServerScanResult(name=server_name, server=server) for server_name,                                │                  
+                    │       server in servers.items()                                                                                         │                  
+                    │                                                                                                                         │                  
+                    │ /Users/andrewsouthard/.cache/uv/archive-v0/P7aXbOUawBMn7IeKtJ9g1/lib/python3.13/site-packages/mcp_scan/mcp_client.py:16 │                  
+                    │ 9 in scan_mcp_config_file                                                                                               │                  
+                    │                                                                                                                         │                  
+                    │   166 │                                                                                                                 │                  
+                    │   167 │   try:                                                                                                          │                  
+                    │   168 │   │   logger.debug("Opening config file")                                                                       │                  
+                    │ ❱ 169 │   │   with open(path) as f:                                                                                     │                  
+                    │   170 │   │   │   content = f.read()                                                                                    │                  
+                    │   171 │   │   logger.debug("Config file read successfully")                                                             │                  
+                    │   172 │   │   # use json5 to support comments as in vscode                                                              │                  
+                    ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                  
+                    FileNotFoundError: [Errno 2] No such file or directory: '/Users/andrewsouthard/.codeium/windsurf/mcp_config.json'                            
+[09:21:32] DEBUG    Check whitelisted ~/.codeium/windsurf/mcp_config.json, False                                                                MCPScanner.py:210
+           DEBUG    Checking whitelist for path: ~/.codeium/windsurf/mcp_config.json                                                            MCPScanner.py:152
+           DEBUG    Check changed: ~/.codeium/windsurf/mcp_config.json, False                                                                   MCPScanner.py:212
+           DEBUG    Checking server changed: ~/.codeium/windsurf/mcp_config.json                                                                MCPScanner.py:132
+           DEBUG    Verifying server path: ~/.codeium/windsurf/mcp_config.json, False                                                           MCPScanner.py:214
+           INFO     Scanning path: ~/.cursor/mcp.json, inspect_only: False                                                                      MCPScanner.py:194
+           INFO     Getting servers from path: ~/.cursor/mcp.json                                                                               MCPScanner.py:113
+           INFO     Scanning MCP config file: ~/.cursor/mcp.json                                                                                mcp_client.py:147
+           DEBUG    Expanded path: /Users/andrewsouthard/.cursor/mcp.json                                                                       mcp_client.py:149
+           DEBUG    Opening config file                                                                                                         mcp_client.py:168
+           DEBUG    Config file read successfully                                                                                               mcp_client.py:171
+           DEBUG    Config JSON parsed successfully                                                                                             mcp_client.py:174
+           DEBUG    Parsing and validating config                                                                                               mcp_client.py:152
+           DEBUG    Trying to validate with model: ClaudeConfigFile                                                                             mcp_client.py:160
+           INFO     Config file parsed and validated successfully                                                                               mcp_client.py:177
+           DEBUG    Found 3 servers in path: ~/.cursor/mcp.json                                                                                 MCPScanner.py:117
+           DEBUG    Scanning server 1/3: Snyk                                                                                                   MCPScanner.py:198
+           INFO     Scanning server: Snyk                                                                                                       MCPScanner.py:170
+           DEBUG    Checking server with timeout: 10 seconds                                                                                    mcp_client.py:136
+           INFO     Checking server with config: command='snyk mcp -t stdio --experimental' args=None type='stdio' env={'SNYK_TOKEN':            mcp_client.py:73
+                    ''}, timeout: 10                                                                                         
+           INFO     Initializing server connection                                                                                               mcp_client.py:76
+           DEBUG    Creating stdio client                                                                                                        mcp_client.py:58
+           DEBUG    Using command: snyk, args: ['mcp', '-t', 'stdio', '--experimental']                                                          mcp_client.py:61
+           INFO     Scanning path: ~/Library/Application Support/Claude/claude_desktop_config.json, inspect_only: False                         MCPScanner.py:194
+           INFO     Getting servers from path: ~/Library/Application Support/Claude/claude_desktop_config.json                                  MCPScanner.py:113
+           INFO     Scanning MCP config file: ~/Library/Application Support/Claude/claude_desktop_config.json                                   mcp_client.py:147
+           DEBUG    Expanded path: /Users/andrewsouthard/Library/Application Support/Claude/claude_desktop_config.json                          mcp_client.py:149
+           DEBUG    Opening config file                                                                                                         mcp_client.py:168
+           ERROR    Error processing config file                                                                                                mcp_client.py:180
+                    ╭─────────────────────────────────────────── Traceback (most recent call last) ───────────────────────────────────────────╮                  
+                    │ /Users/andrewsouthard/.cache/uv/archive-v0/P7aXbOUawBMn7IeKtJ9g1/lib/python3.13/site-packages/mcp_scan/mcp_client.py:16 │                  
+                    │ 9 in scan_mcp_config_file                                                                                               │                  
+                    │                                                                                                                         │                  
+                    │   166 │                                                                                                                 │                  
+                    │   167 │   try:                                                                                                          │                  
+                    │   168 │   │   logger.debug("Opening config file")                                                                       │                  
+                    │ ❱ 169 │   │   with open(path) as f:                                                                                     │                  
+                    │   170 │   │   │   content = f.read()                                                                                    │                  
+                    │   171 │   │   logger.debug("Config file read successfully")                                                             │                  
+                    │   172 │   │   # use json5 to support comments as in vscode                                                              │                  
+                    ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                  
+                    FileNotFoundError: [Errno 2] No such file or directory: '/Users/andrewsouthard/Library/Application                                           
+                    Support/Claude/claude_desktop_config.json'                                                                                                   
+           ERROR    file does not exist: ~/Library/Application Support/Claude/claude_desktop_config.json                                        MCPScanner.py:123
+                    ╭─────────────────────────────────────────── Traceback (most recent call last) ───────────────────────────────────────────╮                  
+                    │ /Users/andrewsouthard/.cache/uv/archive-v0/P7aXbOUawBMn7IeKtJ9g1/lib/python3.13/site-packages/mcp_scan/MCPScanner.py:11 │                  
+                    │ 6 in get_servers_from_path                                                                                              │                  
+                    │                                                                                                                         │                  
+                    │   113 │   │   logger.info("Getting servers from path: %s", path)                                                        │                  
+                    │   114 │   │   result = ScanPathResult(path=path)                                                                        │                  
+                    │   115 │   │   try:                                                                                                      │                  
+                    │ ❱ 116 │   │   │   servers = (await scan_mcp_config_file(path)).get_servers()                                            │                  
+                    │   117 │   │   │   logger.debug("Found %d servers in path: %s", len(servers), path)                                      │                  
+                    │   118 │   │   │   result.servers = [                                                                                    │                  
+                    │   119 │   │   │   │   ServerScanResult(name=server_name, server=server) for server_name,                                │                  
+                    │       server in servers.items()                                                                                         │                  
+                    │                                                                                                                         │                  
+                    │ /Users/andrewsouthard/.cache/uv/archive-v0/P7aXbOUawBMn7IeKtJ9g1/lib/python3.13/site-packages/mcp_scan/mcp_client.py:16 │                  
+                    │ 9 in scan_mcp_config_file                                                                                               │                  
+                    │                                                                                                                         │                  
+                    │   166 │                                                                                                                 │                  
+                    │   167 │   try:                                                                                                          │                  
+                    │   168 │   │   logger.debug("Opening config file")                                                                       │                  
+                    │ ❱ 169 │   │   with open(path) as f:                                                                                     │                  
+                    │   170 │   │   │   content = f.read()                                                                                    │                  
+                    │   171 │   │   logger.debug("Config file read successfully")                                                             │                  
+                    │   172 │   │   # use json5 to support comments as in vscode                                                              │                  
+                    ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                  
+                    FileNotFoundError: [Errno 2] No such file or directory: '/Users/andrewsouthard/Library/Application                                           
+                    Support/Claude/claude_desktop_config.json'                                                                                                   
+           DEBUG    Check whitelisted ~/Library/Application Support/Claude/claude_desktop_config.json, False                                    MCPScanner.py:210
+           DEBUG    Checking whitelist for path: ~/Library/Application Support/Claude/claude_desktop_config.json                                MCPScanner.py:152
+           DEBUG    Check changed: ~/Library/Application Support/Claude/claude_desktop_config.json, False                                       MCPScanner.py:212
+           DEBUG    Checking server changed: ~/Library/Application Support/Claude/claude_desktop_config.json                                    MCPScanner.py:132
+           DEBUG    Verifying server path: ~/Library/Application Support/Claude/claude_desktop_config.json, False                               MCPScanner.py:214
+           INFO     Scanning path: ~/.vscode/mcp.json, inspect_only: False                                                                      MCPScanner.py:194
+           INFO     Getting servers from path: ~/.vscode/mcp.json                                                                               MCPScanner.py:113
+           INFO     Scanning MCP config file: ~/.vscode/mcp.json                                                                                mcp_client.py:147
+           DEBUG    Expanded path: /Users/andrewsouthard/.vscode/mcp.json                                                                       mcp_client.py:149
+           DEBUG    Opening config file                                                                                                         mcp_client.py:168
+           ERROR    Error processing config file                                                                                                mcp_client.py:180
+                    ╭─────────────────────────────────────────── Traceback (most recent call last) ───────────────────────────────────────────╮                  
+                    │ /Users/andrewsouthard/.cache/uv/archive-v0/P7aXbOUawBMn7IeKtJ9g1/lib/python3.13/site-packages/mcp_scan/mcp_client.py:16 │                  
+                    │ 9 in scan_mcp_config_file                                                                                               │                  
+                    │                                                                                                                         │                  
+                    │   166 │                                                                                                                 │                  
+                    │   167 │   try:                                                                                                          │                  
+                    │   168 │   │   logger.debug("Opening config file")                                                                       │                  
+                    │ ❱ 169 │   │   with open(path) as f:                                                                                     │                  
+                    │   170 │   │   │   content = f.read()                                                                                    │                  
+                    │   171 │   │   logger.debug("Config file read successfully")                                                             │                  
+                    │   172 │   │   # use json5 to support comments as in vscode                                                              │                  
+                    ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                  
+                    FileNotFoundError: [Errno 2] No such file or directory: '/Users/andrewsouthard/.vscode/mcp.json'                                             
+           ERROR    file does not exist: ~/.vscode/mcp.json                                                                                     MCPScanner.py:123
+                    ╭─────────────────────────────────────────── Traceback (most recent call last) ───────────────────────────────────────────╮                  
+                    │ /Users/andrewsouthard/.cache/uv/archive-v0/P7aXbOUawBMn7IeKtJ9g1/lib/python3.13/site-packages/mcp_scan/MCPScanner.py:11 │                  
+                    │ 6 in get_servers_from_path                                                                                              │                  
+                    │                                                                                                                         │                  
+                    │   113 │   │   logger.info("Getting servers from path: %s", path)                                                        │                  
+                    │   114 │   │   result = ScanPathResult(path=path)                                                                        │                  
+                    │   115 │   │   try:                                                                                                      │                  
+                    │ ❱ 116 │   │   │   servers = (await scan_mcp_config_file(path)).get_servers()                                            │                  
+                    │   117 │   │   │   logger.debug("Found %d servers in path: %s", len(servers), path)                                      │                  
+                    │   118 │   │   │   result.servers = [                                                                                    │                  
+                    │   119 │   │   │   │   ServerScanResult(name=server_name, server=server) for server_name,                                │                  
+                    │       server in servers.items()                                                                                         │                  
+                    │                                                                                                                         │                  
+                    │ /Users/andrewsouthard/.cache/uv/archive-v0/P7aXbOUawBMn7IeKtJ9g1/lib/python3.13/site-packages/mcp_scan/mcp_client.py:16 │                  
+                    │ 9 in scan_mcp_config_file                                                                                               │                  
+                    │                                                                                                                         │                  
+                    │   166 │                                                                                                                 │                  
+                    │   167 │   try:                                                                                                          │                  
+                    │   168 │   │   logger.debug("Opening config file")                                                                       │                  
+                    │ ❱ 169 │   │   with open(path) as f:                                                                                     │                  
+                    │   170 │   │   │   content = f.read()                                                                                    │                  
+                    │   171 │   │   logger.debug("Config file read successfully")                                                             │                  
+                    │   172 │   │   # use json5 to support comments as in vscode                                                              │                  
+                    ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                  
+                    FileNotFoundError: [Errno 2] No such file or directory: '/Users/andrewsouthard/.vscode/mcp.json'                                             
+           DEBUG    Check whitelisted ~/.vscode/mcp.json, False                                                                                 MCPScanner.py:210
+           DEBUG    Checking whitelist for path: ~/.vscode/mcp.json                                                                             MCPScanner.py:152
+           DEBUG    Check changed: ~/.vscode/mcp.json, False                                                                                    MCPScanner.py:212
+           DEBUG    Checking server changed: ~/.vscode/mcp.json                                                                                 MCPScanner.py:132
+           DEBUG    Verifying server path: ~/.vscode/mcp.json, False                                                                            MCPScanner.py:214
+           INFO     Scanning path: ~/Library/Application Support/Code/User/settings.json, inspect_only: False                                   MCPScanner.py:194
+           INFO     Getting servers from path: ~/Library/Application Support/Code/User/settings.json                                            MCPScanner.py:113
+           INFO     Scanning MCP config file: ~/Library/Application Support/Code/User/settings.json                                             mcp_client.py:147
+           DEBUG    Expanded path: /Users/andrewsouthard/Library/Application Support/Code/User/settings.json                                    mcp_client.py:149
+           DEBUG    Opening config file                                                                                                         mcp_client.py:168
+           DEBUG    Config file read successfully                                                                                               mcp_client.py:171
+           DEBUG    Config JSON parsed successfully                                                                                             mcp_client.py:174
+           DEBUG    Parsing and validating config                                                                                               mcp_client.py:152
+           DEBUG    Trying to validate with model: ClaudeConfigFile                                                                             mcp_client.py:160
+           DEBUG    Validation with ClaudeConfigFile failed                                                                                     mcp_client.py:163
+           DEBUG    Trying to validate with model: VSCodeConfigFile                                                                             mcp_client.py:160
+           DEBUG    Validation with VSCodeConfigFile failed                                                                                     mcp_client.py:163
+           DEBUG    Trying to validate with model: VSCodeMCPConfig                                                                              mcp_client.py:160
+           DEBUG    Validation with VSCodeMCPConfig failed                                                                                      mcp_client.py:163
+           ERROR    Error processing config file                                                                                                mcp_client.py:180
+                    ╭─────────────────────────────────────────── Traceback (most recent call last) ───────────────────────────────────────────╮                  
+                    │ /Users/andrewsouthard/.cache/uv/archive-v0/P7aXbOUawBMn7IeKtJ9g1/lib/python3.13/site-packages/mcp_scan/mcp_client.py:17 │                  
+                    │ 6 in scan_mcp_config_file                                                                                               │                  
+                    │                                                                                                                         │                  
+                    │   173 │   │   config = pyjson5.loads(content)                                                                           │                  
+                    │   174 │   │   logger.debug("Config JSON parsed successfully")                                                           │                  
+                    │   175 │   │   # try to parse model                                                                                      │                  
+                    │ ❱ 176 │   │   result = parse_and_validate(config)                                                                       │                  
+                    │   177 │   │   logger.info("Config file parsed and validated successfully")                                              │                  
+                    │   178 │   │   return result                                                                                             │                  
+                    │   179 │   except Exception:                                                                                             │                  
+                    │                                                                                                                         │                  
+                    │ /Users/andrewsouthard/.cache/uv/archive-v0/P7aXbOUawBMn7IeKtJ9g1/lib/python3.13/site-packages/mcp_scan/mcp_client.py:16 │                  
+                    │ 5 in parse_and_validate                                                                                                 │                  
+                    │                                                                                                                         │                  
+                    │   162 │   │   │   except Exception:                                                                                     │                  
+                    │   163 │   │   │   │   logger.debug("Validation with %s failed", model.__name__)                                         │                  
+                    │   164 │   │   error_msg = "Could not parse config file as any of " + str([model.__name__ for                            │                  
+                    │       model in models])                                                                                                 │                  
+                    │ ❱ 165 │   │   raise Exception(error_msg)                                                                                │                  
+                    │   166 │                                                                                                                 │                  
+                    │   167 │   try:                                                                                                          │                  
+                    │   168 │   │   logger.debug("Opening config file")                                                                       │                  
+                    ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                  
+                    Exception: Could not parse config file as any of ['ClaudeConfigFile', 'VSCodeConfigFile', 'VSCodeMCPConfig']                                 
+           ERROR    could not parse file: ~/Library/Application Support/Code/User/settings.json                                                 MCPScanner.py:127
+                    ╭─────────────────────────────────────────── Traceback (most recent call last) ───────────────────────────────────────────╮                  
+                    │ /Users/andrewsouthard/.cache/uv/archive-v0/P7aXbOUawBMn7IeKtJ9g1/lib/python3.13/site-packages/mcp_scan/MCPScanner.py:11 │                  
+                    │ 6 in get_servers_from_path                                                                                              │                  
+                    │                                                                                                                         │                  
+                    │   113 │   │   logger.info("Getting servers from path: %s", path)                                                        │                  
+                    │   114 │   │   result = ScanPathResult(path=path)                                                                        │                  
+                    │   115 │   │   try:                                                                                                      │                  
+                    │ ❱ 116 │   │   │   servers = (await scan_mcp_config_file(path)).get_servers()                                            │                  
+                    │   117 │   │   │   logger.debug("Found %d servers in path: %s", len(servers), path)                                      │                  
+                    │   118 │   │   │   result.servers = [                                                                                    │                  
+                    │   119 │   │   │   │   ServerScanResult(name=server_name, server=server) for server_name,                                │                  
+                    │       server in servers.items()                                                                                         │                  
+                    │                                                                                                                         │                  
+                    │ /Users/andrewsouthard/.cache/uv/archive-v0/P7aXbOUawBMn7IeKtJ9g1/lib/python3.13/site-packages/mcp_scan/mcp_client.py:17 │                  
+                    │ 6 in scan_mcp_config_file                                                                                               │                  
+                    │                                                                                                                         │                  
+                    │   173 │   │   config = pyjson5.loads(content)                                                                           │                  
+                    │   174 │   │   logger.debug("Config JSON parsed successfully")                                                           │                  
+                    │   175 │   │   # try to parse model                                                                                      │                  
+                    │ ❱ 176 │   │   result = parse_and_validate(config)                                                                       │                  
+                    │   177 │   │   logger.info("Config file parsed and validated successfully")                                              │                  
+                    │   178 │   │   return result                                                                                             │                  
+                    │   179 │   except Exception:                                                                                             │                  
+                    │                                                                                                                         │                  
+                    │ /Users/andrewsouthard/.cache/uv/archive-v0/P7aXbOUawBMn7IeKtJ9g1/lib/python3.13/site-packages/mcp_scan/mcp_client.py:16 │                  
+                    │ 5 in parse_and_validate                                                                                                 │                  
+                    │                                                                                                                         │                  
+                    │   162 │   │   │   except Exception:                                                                                     │                  
+                    │   163 │   │   │   │   logger.debug("Validation with %s failed", model.__name__)                                         │                  
+                    │   164 │   │   error_msg = "Could not parse config file as any of " + str([model.__name__ for                            │                  
+                    │       model in models])                                                                                                 │                  
+                    │ ❱ 165 │   │   raise Exception(error_msg)                                                                                │                  
+                    │   166 │                                                                                                                 │                  
+                    │   167 │   try:                                                                                                          │                  
+                    │   168 │   │   logger.debug("Opening config file")                                                                       │                  
+                    ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                  
+                    Exception: Could not parse config file as any of ['ClaudeConfigFile', 'VSCodeConfigFile', 'VSCodeMCPConfig']                                 
+           DEBUG    Check whitelisted ~/Library/Application Support/Code/User/settings.json, False                                              MCPScanner.py:210
+           DEBUG    Checking whitelist for path: ~/Library/Application Support/Code/User/settings.json                                          MCPScanner.py:152
+           DEBUG    Check changed: ~/Library/Application Support/Code/User/settings.json, False                                                 MCPScanner.py:212
+           DEBUG    Checking server changed: ~/Library/Application Support/Code/User/settings.json                                              MCPScanner.py:132
+           DEBUG    Verifying server path: ~/Library/Application Support/Code/User/settings.json, False                                         MCPScanner.py:214
+           DEBUG    Server initialized with metadata: meta=None protocolVersion='2025-03-26' capabilities=ServerCapabilities(experimental=None,  mcp_client.py:80
+                    logging=LoggingCapability(), prompts=PromptsCapability(listChanged=True), resources=ResourcesCapability(subscribe=True,                      
+                    listChanged=True), tools=ToolsCapability(listChanged=True), completions=None) serverInfo=Implementation(name='Snyk MCP                       
+                    Server', title=None, version='1.1298.2') instructions=None                                                                                   
+           DEBUG    Server capabilities: experimental=None logging=LoggingCapability() prompts=PromptsCapability(listChanged=True)               mcp_client.py:87
+                    resources=ResourcesCapability(subscribe=True, listChanged=True) tools=ToolsCapability(listChanged=True) completions=None                     
+           DEBUG    Fetching prompts                                                                                                             mcp_client.py:89
+           DEBUG    Found 0 prompts                                                                                                              mcp_client.py:92
+           DEBUG    Server capabilities: experimental=None logging=LoggingCapability() prompts=PromptsCapability(listChanged=True)               mcp_client.py:96
+                    resources=ResourcesCapability(subscribe=True, listChanged=True) tools=ToolsCapability(listChanged=True) completions=None                     
+           DEBUG    Fetching resources                                                                                                           mcp_client.py:98
+           DEBUG    Found 0 resources                                                                                                           mcp_client.py:101
+           DEBUG    Fetching resource templates                                                                                                 mcp_client.py:105
+           DEBUG    Found 0 resource templates                                                                                                  mcp_client.py:108
+           DEBUG    Fetching tools                                                                                                              mcp_client.py:113
+           DEBUG    Found 11 tools                                                                                                              mcp_client.py:116
+           INFO     Server check completed successfully                                                                                         mcp_client.py:119
+           DEBUG    Emitting signal: path_scanned                                                                                               MCPScanner.py:165
+           DEBUG    Emitting signal: path_scanned                                                                                                MCPScanner.py:42
+           DEBUG    Emitting signal: path_scanned                                                                                               MCPScanner.py:165
+           DEBUG    Emitting signal: path_scanned                                                                                                MCPScanner.py:42
+           DEBUG    Emitting signal: path_scanned                                                                                               MCPScanner.py:165
+           DEBUG    Emitting signal: path_scanned                                                                                                MCPScanner.py:42
+           DEBUG    Emitting signal: path_scanned                                                                                               MCPScanner.py:165
+           DEBUG    Emitting signal: path_scanned                                                                                                MCPScanner.py:42
+           DEBUG    Server check completed within timeout                                                                                       mcp_client.py:139
+           DEBUG    Server Snyk has 0 prompts, 0 resources, 0 resouce templates,  11 tools                                                      MCPScanner.py:176
+           DEBUG    Emitting signal: server_scanned                                                                                             MCPScanner.py:165
+           DEBUG    Emitting signal: server_scanned                                                                                              MCPScanner.py:42
+           DEBUG    Scanning server 2/3: Notion                                                                                                 MCPScanner.py:198
+           INFO     Scanning server: Notion                                                                                                     MCPScanner.py:170
+           DEBUG    Checking server with timeout: 10 seconds                                                                                    mcp_client.py:136
+           INFO     Checking server with config: url='https://mcp.notion.com/mcp' type='sse' headers={}, timeout: 10                             mcp_client.py:73
+           INFO     Initializing server connection                                                                                               mcp_client.py:76
+           DEBUG    Creating SSE client with URL: https://mcp.notion.com/mcp                                                                     mcp_client.py:41
+           DEBUG    Connecting to SSE endpoint: https://mcp.notion.com/mcp                                                                              sse.py:56
+           DEBUG    connect_tcp.started host='mcp.notion.com' port=443 local_address=None timeout=10 socket_options=None                             _trace.py:87
+           DEBUG    connect_tcp.complete return_value=<httpcore._backends.anyio.AnyIOStream object at 0x120480ec0>                                   _trace.py:87
+           DEBUG    start_tls.started ssl_context=<ssl.SSLContext object at 0x1203e1be0> server_hostname='mcp.notion.com' timeout=10                 _trace.py:87
+           DEBUG    start_tls.complete return_value=<httpcore._backends.anyio.AnyIOStream object at 0x120333b10>                                     _trace.py:87
+           DEBUG    send_request_headers.started request=<Request >                                                                                  _trace.py:87
+           DEBUG    send_request_headers.complete                                                                                                    _trace.py:87
+           DEBUG    send_request_body.started request=<Request >                                                                                     _trace.py:87
+           DEBUG    send_request_body.complete                                                                                                       _trace.py:87
+           DEBUG    receive_response_headers.started request=<Request >                                                                              _trace.py:87
+           DEBUG    receive_response_headers.complete return_value=(b'HTTP/1.1', 401, b'Unauthorized', [(b'Date', b'Tue, 19 Aug 2025 13:21:32 GMT'), _trace.py:87
+                    , (b'WWW-Authenticate', b'Bearer realm="OAuth", error="invalid_token", error_description="Missing or                 
+                    invalid access token"'), (b'Set-Cookie',                                                                                                     
+                    b'__cf_bm=uttpOnly; Secure; SameSite=None'), (b'Vary', b'Accept-Encoding'), (b'Strict-Transport-Security',                 
+                    b'max-age=31536000; includeSubDomains; preload'), (b'Server', b'cloudflare'), (b'alt-svc', b'h3=":443"; ma=86400')])                         
+           INFO     HTTP Request: GET https://mcp.notion.com/mcp "HTTP/1.1 401 Unauthorized"                                                      _client.py:1740
+           DEBUG    response_closed.started                                                                                                          _trace.py:87
+           DEBUG    response_closed.complete                                                                                                         _trace.py:87
+           ERROR    could not start server: Notion                                                                                              MCPScanner.py:186
+                    ╭─────────────────────────────────────────── Traceback (most recent call last) ───────────────────────────────────────────╮                  
+                    │ /Users/andrewsouthard/.cache/uv/archive-v0/P7aXbOUawBMn7IeKtJ9g1/lib/python3.13/site-packages/mcp_scan/MCPScanner.py:17 │                  
+                    │ 3 in scan_server                                                                                                        │                  
+                    │                                                                                                                         │                  
+                    │   170 │   │   logger.info("Scanning server: %s", server.name)                                                           │                  
+                    │   171 │   │   result = server.clone()                                                                                   │                  
+                    │   172 │   │   try:                                                                                                      │                  
+                    │ ❱ 173 │   │   │   result.signature = await check_server_with_timeout(                                                   │                  
+                    │   174 │   │   │   │   server.server, self.server_timeout, self.suppress_mcpserver_io                                    │                  
+                    │   175 │   │   │   )                                                                                                     │                  
+                    │   176 │   │   │   logger.debug(                                                                                         │                  
+                    │                                                                                                                         │                  
+                    │ /Users/andrewsouthard/.cache/uv/archive-v0/P7aXbOUawBMn7IeKtJ9g1/lib/python3.13/site-packages/mcp_scan/mcp_client.py:13 │                  
+                    │ 8 in check_server_with_timeout                                                                                          │                  
+                    │                                                                                                                         │                  
+                    │   135 ) -> ServerSignature:                                                                                             │                  
+                    │   136 │   logger.debug("Checking server with timeout: %s seconds", timeout)                                             │                  
+                    │   137 │   try:                                                                                                          │                  
+                    │ ❱ 138 │   │   result = await asyncio.wait_for(check_server(server_config, timeout,                                      │                  
+                    │       suppress_mcpserver_io), timeout)                                                                                  │                  
+                    │   139 │   │   logger.debug("Server check completed within timeout")                                                     │                  
+                    │   140 │   │   return result                                                                                             │                  
+                    │   141 │   except asyncio.TimeoutError:                                                                                  │                  
+                    │                                                                                                                         │                  
+                    │ /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/tasks.py:507   │                  
+                    │ in wait_for                                                                                                             │                  
+                    │                                                                                                                         │                  
+                    │    504 │   │   │   raise TimeoutError from exc                                                                          │                  
+                    │    505 │                                                                                                                │                  
+                    │    506 │   async with timeouts.timeout(timeout):                                                                        │                  
+                    │ ❱  507 │   │   return await fut                                                                                         │                  
+                    │    508                                                                                                                  │                  
+                    │    509 async def _wait(fs, timeout, return_when, loop):                                                                 │                  
+                    │    510 │   """Internal helper for wait().                                                                               │                  
+                    │                                                                                                                         │                  
+                    │ /Users/andrewsouthard/.cache/uv/archive-v0/P7aXbOUawBMn7IeKtJ9g1/lib/python3.13/site-packages/mcp_scan/mcp_client.py:12 │                  
+                    │ 8 in check_server                                                                                                       │                  
+                    │                                                                                                                         │                  
+                    │   125 │   │   │   │   │   tools=tools,                                                                                  │                  
+                    │   126 │   │   │   │   )                                                                                                 │                  
+                    │   127 │                                                                                                                 │                  
+                    │ ❱ 128 │   return await _check_server(verbose=not suppress_mcpserver_io)                                                 │                  
+                    │   129                                                                                                                   │                  
+                    │   130                                                                                                                   │                  
+                    │   131 async def check_server_with_timeout(                                                                              │                  
+                    │                                                                                                                         │                  
+                    │ /Users/andrewsouthard/.cache/uv/archive-v0/P7aXbOUawBMn7IeKtJ9g1/lib/python3.13/site-packages/mcp_scan/mcp_client.py:77 │                  
+                    │ in _check_server                                                                                                        │                  
+                    │                                                                                                                         │                  
+                    │    74 │                                                                                                                 │                  
+                    │    75 │   async def _check_server(verbose: bool) -> ServerSignature:                                                    │                  
+                    │    76 │   │   logger.info("Initializing server connection")                                                             │                  
+                    │ ❱  77 │   │   async with get_client(server_config, timeout=timeout, verbose=verbose) as (read,                          │                  
+                    │       write):                                                                                                           │                  
+                    │    78 │   │   │   async with ClientSession(read, write) as session:                                                     │                  
+                    │    79 │   │   │   │   meta = await session.initialize()                                                                 │                  
+                    │    80 │   │   │   │   logger.debug("Server initialized with metadata: %s", meta)                                        │                  
+                    │                                                                                                                         │                  
+                    │ /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py:214 in   │                  
+                    │ __aenter__                                                                                                              │                  
+                    │                                                                                                                         │                  
+                    │   211 │   │   # they are only needed for recreation, which is not possible anymore                                      │                  
+                    │   212 │   │   del self.args, self.kwds, self.func                                                                       │                  
+                    │   213 │   │   try:                                                                                                      │                  
+                    │ ❱ 214 │   │   │   return await anext(self.gen)                                                                          │                  
+                    │   215 │   │   except StopAsyncIteration:                                                                                │                  
+                    │   216 │   │   │   raise RuntimeError("generator didn't yield") from None                                                │                  
+                    │   217                                                                                                                   │                  
+                    │                                                                                                                         │                  
+                    │ /Users/andrewsouthard/.cache/uv/archive-v0/P7aXbOUawBMn7IeKtJ9g1/lib/python3.13/site-packages/mcp/client/sse.py:54 in   │                  
+                    │ sse_client                                                                                                              │                  
+                    │                                                                                                                         │                  
+                    │    51 │   read_stream_writer, read_stream = anyio.create_memory_object_stream(0)                                        │                  
+                    │    52 │   write_stream, write_stream_reader = anyio.create_memory_object_stream(0)                                      │                  
+                    │    53 │                                                                                                                 │                  
+                    │ ❱  54 │   async with anyio.create_task_group() as tg:                                                                   │                  
+                    │    55 │   │   try:                                                                                                      │                  
+                    │    56 │   │   │   logger.debug(f"Connecting to SSE endpoint: {remove_request_params(url)}")                             │                  
+                    │    57 │   │   │   async with httpx_client_factory(                                                                      │                  
+                    │                                                                                                                         │                  
+                    │ /Users/andrewsouthard/.cache/uv/archive-v0/P7aXbOUawBMn7IeKtJ9g1/lib/python3.13/site-packages/anyio/_backends/_asyncio. │                  
+                    │ py:772 in __aexit__                                                                                                     │                  
+                    │                                                                                                                         │                  
+                    │    769 │   │   │   │   │   # added to self._exceptions so it's ok to break exception                                    │                  
+                    │    770 │   │   │   │   │   # chaining and avoid adding a "During handling of above..."                                  │                  
+                    │    771 │   │   │   │   │   # for each nesting level.                                                                    │                  
+                    │ ❱  772 │   │   │   │   │   raise BaseExceptionGroup(                                                                    │                  
+                    │    773 │   │   │   │   │   │   "unhandled errors in a TaskGroup", self._exceptions                                      │                  
+                    │    774 │   │   │   │   │   ) from None                                                                                  │                  
+                    │    775 │   │   │   │   elif exc_val:                                                                                    │                  
+                    ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                  
+                    ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)                                                                            
+                                                                                                                                                                 
+                    ╭─────────────────────────────────────────────────── Sub-exception #1 ────────────────────────────────────────────────────╮                  
+                    │ ╭───────────────────────────────────────── Traceback (most recent call last) ─────────────────────────────────────────╮ │                  
+                    │ │ /Users/andrewsouthard/.cache/uv/archive-v0/P7aXbOUawBMn7IeKtJ9g1/lib/python3.13/site-packages/mcp/client/sse.py:65  │ │                  
+                    │ │ in sse_client                                                                                                       │ │                  
+                    │ │                                                                                                                     │ │                  
+                    │ │    62 │   │   │   │   │   "GET",                                                                                    │ │                  
+                    │ │    63 │   │   │   │   │   url,                                                                                      │ │                  
+                    │ │    64 │   │   │   │   ) as event_source:                                                                            │ │                  
+                    │ │ ❱  65 │   │   │   │   │   event_source.response.raise_for_status()                                                  │ │                  
+                    │ │    66 │   │   │   │   │   logger.debug("SSE connection established")                                                │ │                  
+                    │ │    67 │   │   │   │   │                                                                                             │ │                  
+                    │ │    68 │   │   │   │   │   async def sse_reader(                                                                     │ │                  
+                    │ │                                                                                                                     │ │                  
+                    │ │ /Users/andrewsouthard/.cache/uv/archive-v0/P7aXbOUawBMn7IeKtJ9g1/lib/python3.13/site-packages/httpx/_models.py:829  │ │                  
+                    │ │ in raise_for_status                                                                                                 │ │                  
+                    │ │                                                                                                                     │ │                  
+                    │ │    826 │   │   }                                                                                                    │ │                  
+                    │ │    827 │   │   error_type = error_types.get(status_class, "Invalid status code")                                    │ │                  
+                    │ │    828 │   │   message = message.format(self, error_type=error_type)                                                │ │                  
+                    │ │ ❱  829 │   │   raise HTTPStatusError(message, request=request, response=self)                                       │ │                  
+                    │ │    830 │                                                                                                            │ │                  
+                    │ │    831 │   def json(self, **kwargs: typing.Any) -> typing.Any:                                                      │ │                  
+                    │ │    832 │   │   return jsonlib.loads(self.content, **kwargs)                                                         │ │                  
+                    │ ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯ │                  
+                    │ HTTPStatusError: Client error '401 Unauthorized' for url 'https://mcp.notion.com/mcp'                                   │                  
+                    │ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401                                │                  
+                    ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                  
+           DEBUG    Emitting signal: server_scanned                                                                                             MCPScanner.py:165
+           DEBUG    Emitting signal: server_scanned                                                                                              MCPScanner.py:42
+           DEBUG    Scanning server 3/3: GitHub                                                                                                 MCPScanner.py:198
+           INFO     Scanning server: GitHub                                                                                                     MCPScanner.py:170
+           DEBUG    Checking server with timeout: 10 seconds                                                                                    mcp_client.py:136
+           INFO     Checking server with config: command='docker run -i --rm -e GITHUB_PERSONAL_ACCESS_TOKEN ghcr.io/github/github-mcp-server'   mcp_client.py:73
+                    args=None type='stdio' env={'GITHUB_PERSONAL_ACCESS_TOKEN': '}, timeout: 10                         
+           INFO     Initializing server connection                                                                                               mcp_client.py:76
+           DEBUG    Creating stdio client                                                                                                        mcp_client.py:58
+           DEBUG    Using command: docker, args: ['run', '-i', '--rm', '-e', 'GITHUB_PERSONAL_ACCESS_TOKEN', 'ghcr.io/github/github-mcp-server'] mcp_client.py:61
+           DEBUG    Server initialized with metadata: meta=None protocolVersion='2025-03-26' capabilities=ServerCapabilities(experimental=None,  mcp_client.py:80
+                    logging=LoggingCapability(), prompts=None, resources=ResourcesCapability(subscribe=True, listChanged=True),                                  
+                    tools=ToolsCapability(listChanged=True), completions=None) serverInfo=Implementation(name='github-mcp-server', title=None,                   
+                    version='v0.5.0') instructions=None                                                                                                          
+           DEBUG    Server capabilities: experimental=None logging=LoggingCapability() prompts=None                                              mcp_client.py:87
+                    resources=ResourcesCapability(subscribe=True, listChanged=True) tools=ToolsCapability(listChanged=True) completions=None                     
+           DEBUG    Fetching prompts                                                                                                             mcp_client.py:89
+           ERROR    Failed to list prompts                                                                                                       mcp_client.py:94
+                    ╭─────────────────────────────────────────── Traceback (most recent call last) ────────────────────────────────────────────╮                 
+                    │ /Users/andrewsouthard/.cache/uv/archive-v0/P7aXbOUawBMn7IeKtJ9g1/lib/python3.13/site-packages/mcp_scan/mcp_client.py:91  │                 
+                    │ in _check_server                                                                                                         │                 
+                    │                                                                                                                          │                 
+                    │    88 │   │   │   │   if isinstance(server_config, StdioServer) or meta.capabilities.prompts:                            │                 
+                    │    89 │   │   │   │   │   logger.debug("Fetching prompts")                                                               │                 
+                    │    90 │   │   │   │   │   try:                                                                                           │                 
+                    │ ❱  91 │   │   │   │   │   │   prompts += (await session.list_prompts()).prompts                                          │                 
+                    │    92 │   │   │   │   │   │   logger.debug("Found %d prompts", len(prompts))                                             │                 
+                    │    93 │   │   │   │   │   except Exception:                                                                              │                 
+                    │    94 │   │   │   │   │   │   logger.exception("Failed to list prompts")                                                 │                 
+                    │                                                                                                                          │                 
+                    │ /Users/andrewsouthard/.cache/uv/archive-v0/P7aXbOUawBMn7IeKtJ9g1/lib/python3.13/site-packages/mcp/client/session.py:337  │                 
+                    │ in list_prompts                                                                                                          │                 
+                    │                                                                                                                          │                 
+                    │   334 │                                                                                                                  │                 
+                    │   335 │   async def list_prompts(self, cursor: str | None = None) -> types.ListPromptsResult:                            │                 
+                    │   336 │   │   """Send a prompts/list request."""                                                                         │                 
+                    │ ❱ 337 │   │   return await self.send_request(                                                                            │                 
+                    │   338 │   │   │   types.ClientRequest(                                                                                   │                 
+                    │   339 │   │   │   │   types.ListPromptsRequest(                                                                          │                 
+                    │   340 │   │   │   │   │   method="prompts/list",                                                                         │                 
+                    │                                                                                                                          │                 
+                    │ /Users/andrewsouthard/.cache/uv/archive-v0/P7aXbOUawBMn7IeKtJ9g1/lib/python3.13/site-packages/mcp/shared/session.py:286  │                 
+                    │ in send_request                                                                                                          │                 
+                    │                                                                                                                          │                 
+                    │   283 │   │   │   │   )                                                                                                  │                 
+                    │   284 │   │   │                                                                                                          │                 
+                    │   285 │   │   │   if isinstance(response_or_error, JSONRPCError):                                                        │                 
+                    │ ❱ 286 │   │   │   │   raise McpError(response_or_error.error)                                                            │                 
+                    │   287 │   │   │   else:                                                                                                  │                 
+                    │   288 │   │   │   │   return result_type.model_validate(response_or_error.result)                                        │                 
+                    │   289                                                                                                                    │                 
+                    ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                 
+                    McpError: prompts not supported                                                                                                              
+[09:21:33] DEBUG    Server capabilities: experimental=None logging=LoggingCapability() prompts=None                                              mcp_client.py:96
+                    resources=ResourcesCapability(subscribe=True, listChanged=True) tools=ToolsCapability(listChanged=True) completions=None                     
+           DEBUG    Fetching resources                                                                                                           mcp_client.py:98
+           DEBUG    Found 0 resources                                                                                                           mcp_client.py:101
+           DEBUG    Fetching resource templates                                                                                                 mcp_client.py:105
+           DEBUG    Found 5 resource templates                                                                                                  mcp_client.py:108
+           DEBUG    Fetching tools                                                                                                              mcp_client.py:113
+           DEBUG    Found 51 tools                                                                                                              mcp_client.py:116
+           INFO     Server check completed successfully                                                                                         mcp_client.py:119
+           DEBUG    Server check completed within timeout                                                                                       mcp_client.py:139
+           DEBUG    Server GitHub has 0 prompts, 0 resources, 5 resouce templates,  51 tools                                                    MCPScanner.py:176
+           DEBUG    Emitting signal: server_scanned                                                                                             MCPScanner.py:165
+           DEBUG    Emitting signal: server_scanned                                                                                              MCPScanner.py:42
+           DEBUG    Check whitelisted ~/.cursor/mcp.json, False                                                                                 MCPScanner.py:210
+           DEBUG    Checking whitelist for path: ~/.cursor/mcp.json                                                                             MCPScanner.py:152
+           DEBUG    Checking if entity snyk_aibom is whitelisted: False                                                                        StorageFile.py:163
+           DEBUG    Checking if entity snyk_auth is whitelisted: False                                                                         StorageFile.py:163
+           DEBUG    Checking if entity snyk_auth_status is whitelisted: False                                                                  StorageFile.py:163
+           DEBUG    Checking if entity snyk_code_scan is whitelisted: False                                                                    StorageFile.py:163
+           DEBUG    Checking if entity snyk_container_scan is whitelisted: False                                                               StorageFile.py:163
+           DEBUG    Checking if entity snyk_iac_scan is whitelisted: False                                                                     StorageFile.py:163
+           DEBUG    Checking if entity snyk_logout is whitelisted: False                                                                       StorageFile.py:163
+           DEBUG    Checking if entity snyk_sbom_scan is whitelisted: False                                                                    StorageFile.py:163
+           DEBUG    Checking if entity snyk_sca_scan is whitelisted: False                                                                     StorageFile.py:163
+           DEBUG    Checking if entity snyk_trust is whitelisted: False                                                                        StorageFile.py:163
+           DEBUG    Checking if entity snyk_version is whitelisted: False                                                                      StorageFile.py:163
+           DEBUG    Checking if entity Repository Content is whitelisted: False                                                                StorageFile.py:163
+           DEBUG    Checking if entity Repository Content for specific branch is whitelisted: False                                            StorageFile.py:163
+           DEBUG    Checking if entity Repository Content for specific commit is whitelisted: False                                            StorageFile.py:163
+           DEBUG    Checking if entity Repository Content for specific pull request is whitelisted: False                                      StorageFile.py:163
+           DEBUG    Checking if entity Repository Content for specific tag is whitelisted: False                                               StorageFile.py:163
+           DEBUG    Checking if entity add_issue_comment is whitelisted: False                                                                 StorageFile.py:163
+           DEBUG    Checking if entity add_pull_request_review_comment_to_pending_review is whitelisted: False                                 StorageFile.py:163
+           DEBUG    Checking if entity assign_copilot_to_issue is whitelisted: False                                                           StorageFile.py:163
+           DEBUG    Checking if entity create_and_submit_pull_request_review is whitelisted: False                                             StorageFile.py:163
+           DEBUG    Checking if entity create_branch is whitelisted: False                                                                     StorageFile.py:163
+           DEBUG    Checking if entity create_issue is whitelisted: False                                                                      StorageFile.py:163
+           DEBUG    Checking if entity create_or_update_file is whitelisted: False                                                             StorageFile.py:163
+           DEBUG    Checking if entity create_pending_pull_request_review is whitelisted: False                                                StorageFile.py:163
+           DEBUG    Checking if entity create_pull_request is whitelisted: False                                                               StorageFile.py:163
+           DEBUG    Checking if entity create_repository is whitelisted: False                                                                 StorageFile.py:163
+           DEBUG    Checking if entity delete_file is whitelisted: False                                                                       StorageFile.py:163
+           DEBUG    Checking if entity delete_pending_pull_request_review is whitelisted: False                                                StorageFile.py:163
+           DEBUG    Checking if entity dismiss_notification is whitelisted: False                                                              StorageFile.py:163
+           DEBUG    Checking if entity fork_repository is whitelisted: False                                                                   StorageFile.py:163
+           DEBUG    Checking if entity get_code_scanning_alert is whitelisted: False                                                           StorageFile.py:163
+           DEBUG    Checking if entity get_commit is whitelisted: False                                                                        StorageFile.py:163
+           DEBUG    Checking if entity get_file_contents is whitelisted: False                                                                 StorageFile.py:163
+           DEBUG    Checking if entity get_issue is whitelisted: False                                                                         StorageFile.py:163
+           DEBUG    Checking if entity get_issue_comments is whitelisted: False                                                                StorageFile.py:163
+           DEBUG    Checking if entity get_me is whitelisted: False                                                                            StorageFile.py:163
+           DEBUG    Checking if entity get_notification_details is whitelisted: False                                                          StorageFile.py:163
+           DEBUG    Checking if entity get_pull_request is whitelisted: False                                                                  StorageFile.py:163
+           DEBUG    Checking if entity get_pull_request_comments is whitelisted: False                                                         StorageFile.py:163
+           DEBUG    Checking if entity get_pull_request_diff is whitelisted: False                                                             StorageFile.py:163
+           DEBUG    Checking if entity get_pull_request_files is whitelisted: False                                                            StorageFile.py:163
+           DEBUG    Checking if entity get_pull_request_reviews is whitelisted: False                                                          StorageFile.py:163
+           DEBUG    Checking if entity get_pull_request_status is whitelisted: False                                                           StorageFile.py:163
+           DEBUG    Checking if entity get_secret_scanning_alert is whitelisted: False                                                         StorageFile.py:163
+           DEBUG    Checking if entity get_tag is whitelisted: False                                                                           StorageFile.py:163
+           DEBUG    Checking if entity list_branches is whitelisted: False                                                                     StorageFile.py:163
+           DEBUG    Checking if entity list_code_scanning_alerts is whitelisted: False                                                         StorageFile.py:163
+           DEBUG    Checking if entity list_commits is whitelisted: False                                                                      StorageFile.py:163
+           DEBUG    Checking if entity list_issues is whitelisted: False                                                                       StorageFile.py:163
+           DEBUG    Checking if entity list_notifications is whitelisted: False                                                                StorageFile.py:163
+           DEBUG    Checking if entity list_pull_requests is whitelisted: False                                                                StorageFile.py:163
+           DEBUG    Checking if entity list_secret_scanning_alerts is whitelisted: False                                                       StorageFile.py:163
+           DEBUG    Checking if entity list_tags is whitelisted: False                                                                         StorageFile.py:163
+           DEBUG    Checking if entity manage_notification_subscription is whitelisted: False                                                  StorageFile.py:163
+           DEBUG    Checking if entity manage_repository_notification_subscription is whitelisted: False                                       StorageFile.py:163
+           DEBUG    Checking if entity mark_all_notifications_read is whitelisted: False                                                       StorageFile.py:163
+           DEBUG    Checking if entity merge_pull_request is whitelisted: False                                                                StorageFile.py:163
+           DEBUG    Checking if entity push_files is whitelisted: False                                                                        StorageFile.py:163
+           DEBUG    Checking if entity request_copilot_review is whitelisted: False                                                            StorageFile.py:163
+           DEBUG    Checking if entity search_code is whitelisted: False                                                                       StorageFile.py:163
+           DEBUG    Checking if entity search_issues is whitelisted: False                                                                     StorageFile.py:163
+           DEBUG    Checking if entity search_repositories is whitelisted: False                                                               StorageFile.py:163
+           DEBUG    Checking if entity search_users is whitelisted: False                                                                      StorageFile.py:163
+           DEBUG    Checking if entity submit_pending_pull_request_review is whitelisted: False                                                StorageFile.py:163
+           DEBUG    Checking if entity update_issue is whitelisted: False                                                                      StorageFile.py:163
+           DEBUG    Checking if entity update_pull_request is whitelisted: False                                                               StorageFile.py:163
+           DEBUG    Checking if entity update_pull_request_branch is whitelisted: False                                                        StorageFile.py:163
+           DEBUG    Check changed: ~/.cursor/mcp.json, False                                                                                    MCPScanner.py:212
+           DEBUG    Checking server changed: ~/.cursor/mcp.json                                                                                 MCPScanner.py:132
+           DEBUG    Checking for changes in server 1/3: Snyk                                                                                    MCPScanner.py:135
+           DEBUG    Checking entity: snyk_aibom in server: Snyk                                                                                StorageFile.py:104
+           DEBUG    Entity snyk_aibom is new (not previously scanned)                                                                          StorageFile.py:129
+           DEBUG    Checking entity: snyk_auth in server: Snyk                                                                                 StorageFile.py:104
+           DEBUG    Entity snyk_auth is new (not previously scanned)                                                                           StorageFile.py:129
+           DEBUG    Checking entity: snyk_auth_status in server: Snyk                                                                          StorageFile.py:104
+           DEBUG    Entity snyk_auth_status is new (not previously scanned)                                                                    StorageFile.py:129
+           DEBUG    Checking entity: snyk_code_scan in server: Snyk                                                                            StorageFile.py:104
+           DEBUG    Entity snyk_code_scan is new (not previously scanned)                                                                      StorageFile.py:129
+           DEBUG    Checking entity: snyk_container_scan in server: Snyk                                                                       StorageFile.py:104
+           DEBUG    Entity snyk_container_scan is new (not previously scanned)                                                                 StorageFile.py:129
+           DEBUG    Checking entity: snyk_iac_scan in server: Snyk                                                                             StorageFile.py:104
+           DEBUG    Entity snyk_iac_scan is new (not previously scanned)                                                                       StorageFile.py:129
+           DEBUG    Checking entity: snyk_logout in server: Snyk                                                                               StorageFile.py:104
+           DEBUG    Entity snyk_logout is new (not previously scanned)                                                                         StorageFile.py:129
+           DEBUG    Checking entity: snyk_sbom_scan in server: Snyk                                                                            StorageFile.py:104
+           DEBUG    Entity snyk_sbom_scan is new (not previously scanned)                                                                      StorageFile.py:129
+           DEBUG    Checking entity: snyk_sca_scan in server: Snyk                                                                             StorageFile.py:104
+           DEBUG    Entity snyk_sca_scan is new (not previously scanned)                                                                       StorageFile.py:129
+           DEBUG    Checking entity: snyk_trust in server: Snyk                                                                                StorageFile.py:104
+           DEBUG    Entity snyk_trust is new (not previously scanned)                                                                          StorageFile.py:129
+           DEBUG    Checking entity: snyk_version in server: Snyk                                                                              StorageFile.py:104
+           DEBUG    Entity snyk_version is new (not previously scanned)                                                                        StorageFile.py:129
+           DEBUG    Checking for changes in server 2/3: Notion                                                                                  MCPScanner.py:135
+           DEBUG    Checking for changes in server 3/3: GitHub                                                                                  MCPScanner.py:135
+           DEBUG    Checking entity: Repository Content in server: GitHub                                                                      StorageFile.py:104
+           DEBUG    Exiting MCPScanner async context                                                                                             MCPScanner.py:92
+           DEBUG    Waiting for 0 running tasks to complete                                                                                      MCPScanner.py:47
