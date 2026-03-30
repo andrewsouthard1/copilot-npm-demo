@@ -5,9 +5,12 @@ const sharp = require('sharp');
 const { v4: uuidv4 } = require('uuid');
 const swaggerUi = require('swagger-ui-express');
 const bcrypt = require('bcrypt');
+const sqlInjectionDemoRoutes = require('./storefront');
+const sqlInjectionDemoExtra = require('./backend');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const helmet = require('helmet');
+const escapeHtml = require('escape-html');
 const winston = require('winston');
 const path = require('path');
 const fs = require('fs');
@@ -1066,6 +1069,10 @@ app.use(passport.session());
 
 // Swagger documentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+// Demonstration routes (SQL injection demo in separate module)
+app.use(sqlInjectionDemoRoutes);
+app.use(sqlInjectionDemoExtra);
 
 // JWT authentication middleware
 const authenticateToken = (req, res, next) => {
@@ -2196,6 +2203,74 @@ app.get('/api/uuid/generate', (req, res) => {
     logger.error('UUID generation error', { error: error.message, requestId });
     res.status(500).json({ error: 'Failed to generate UUIDs' });
   }
+});
+
+// App-level explicit SQL injection POI for Snyk
+app.get('/api/demo/sql-injection/app-snyk', (req, res) => {
+  const userId = req.query.userId || '1';
+  const unsafeQuery = 'SELECT * FROM users WHERE id = ' + userId; // unsafe concatenation
+  res.status(200).json({
+    mode: 'app-snyk',
+    unsafeQuery,
+    warning: 'Direct query concatenation should be flagged as SQL Injection source/sink.'
+  });
+});
+
+// Postgres SQLi pattern for Snyk detection (unsafe concatenation)
+app.get('/api/demo/sql-injection/pg-unsafe', async (req, res) => {
+  const userId = req.query.userId;
+  const unsafeQuery = "SELECT * FROM users WHERE id = " + userId;
+
+  if (!process.env.DATABASE_URL) {
+    return res.status(200).json({
+      mode: 'pg-unsafe',
+      message: 'DATABASE_URL not configured - demonstration only',
+      unsafeQuery,
+      userId
+    });
+  }
+
+  const client = new (require('pg').Client)({ connectionString: process.env.DATABASE_URL });
+  await client.connect();
+
+  try {
+    const { rows } = await client.query(unsafeQuery);
+    res.json({ mode: 'pg-unsafe', userId, unsafeQuery, rows });
+  } catch (err) {
+    res.status(500).json({ error: err.message, unsafeQuery });
+  } finally {
+    await client.end();
+  }
+});
+
+// XSS vulnerable endpoint - direct HTML injection
+app.get('/api/demo/xss/vulnerable', (req, res) => {
+  const username = req.query.username || 'Guest';
+  const html = `<h1>Welcome ${username}</h1>`;
+  res.contentType('text/plain').send(html);
+});
+
+// XSS safe endpoint - escaped HTML
+app.get('/api/demo/xss/safe', (req, res) => {
+  const username = req.query.username || 'Guest';
+  const escapedUsername = escapeHtml(username);
+  const html = `<h1>Welcome ${escapedUsername}</h1>`;
+  res.send(html);
+});
+
+// Backend XSS vulnerable endpoint
+app.get('/api/demo/xss/backend-vulnerable', (req, res) => {
+  const comment = req.query.comment || 'No comment';
+  const html = `<div>User comment: ${comment}</div>`;
+  res.contentType('text/plain').send(html);
+});
+
+// Backend XSS safe endpoint
+app.get('/api/demo/xss/backend-safe', (req, res) => {
+  const comment = req.query.comment || 'No comment';
+  const escapedComment = escapeHtml(comment);
+  const html = `<div>User comment: ${escapedComment}</div>`;
+  res.send(html);
 });
 
 // Scheduled tasks management endpoint
